@@ -6,9 +6,21 @@ const Button = ({ handleClick, text }) => {
   )
 }
 
-const ShowVotes = (props) => {
+const ShowAnecdote = ({anecdote, votes}) => {
   return (
-    <p>has {props.votes} votes</p>
+    <>
+    <p>{anecdote}</p>
+    <p>has {votes} votes</p>
+    </>
+  )
+}
+
+const ShowMostPopular = ({anecdotes, votes}) => {
+  const maxVotes = Math.max(...votes)
+  const mostPopularIndex = votes.indexOf(maxVotes)
+  const mostPopularAnecdote = mostPopularIndex >= 0 ? anecdotes[mostPopularIndex] : "";
+  return (
+    <ShowAnecdote anecdote={mostPopularAnecdote} votes={maxVotes} />
   )
 }
 
@@ -46,10 +58,12 @@ const App = () => {
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <ShowVotes votes={votes[selected]} />
+      <h2>Anecdote of the day</h2>
+      <ShowAnecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
       <Button handleClick={addVote} text="vote" />
       <Button handleClick={setRandomQuote} text="next anecdote" />
+      <h2>Anecdote with most votes</h2>
+      <ShowMostPopular anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
